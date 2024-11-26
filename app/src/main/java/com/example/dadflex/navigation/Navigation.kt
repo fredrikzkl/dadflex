@@ -19,12 +19,13 @@ fun Navigation(
     ) {
         composable(Screen.MenuScreen.route) {
             MenuScreen(
-                modifier = modifier,
-                navController = navController
+                navController = navController,
+                modifier = modifier
             )
         }
         composable(Screen.GameScreen.route) {
             GameScreen(
+                navController = navController,
                 modifier = modifier
             )
         }
