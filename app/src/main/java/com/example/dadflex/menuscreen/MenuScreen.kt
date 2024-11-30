@@ -81,6 +81,14 @@ fun NameInput(modifier : Modifier, navController: NavController){
         ){
             Text("Start!")
         }
+        Button(
+            modifier = modifier,
+            onClick = {
+                navController.navigate(Screen.HighscoreScreen.route)
+            }
+        ){
+            Text("Highscores")
+        }
     }
 }
 

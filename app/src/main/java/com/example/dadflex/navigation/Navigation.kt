@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.dadflex.gamescreen.GameScreen
+import com.example.dadflex.highscorescreen.HighscoreScreen
 import com.example.dadflex.menuscreen.MenuScreen
 
 @Composable
@@ -29,6 +30,13 @@ fun Navigation(
                 modifier = modifier
             )
         }
+        composable(Screen.HighscoreScreen.route) {
+            HighscoreScreen(
+                navController = navController,
+                modifier = modifier
+            )
+        }
+
     }
 }
 
