@@ -52,7 +52,7 @@ fun DadflexTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = DadTypography,
         content = content
     )
 }

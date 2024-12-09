@@ -30,6 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.dadflex.component.BlinkingText
+import com.example.dadflex.component.DadButton
 import com.example.dadflex.navigation.Screen
 import com.example.dadflex.preferences.HighscoreEntry
 import com.example.dadflex.preferences.PreferencesHelper
@@ -99,9 +101,13 @@ fun GameScreen(
 
                     // Check if highscore
                     val highscore = PreferencesHelper.getHighscore(context);
+                    var name = PreferencesHelper.getName(context);
+                    if (name.isNullOrEmpty()){
+                        name = "Player";
+                    }
+
                     val newHighScoreAdded = highscore.checkAndAddHighscore(HighscoreEntry(
-                        // TODO: Add actual player name
-                        name = "Player",
+                        name = name,
                         reactionTime = result,
                         date = Date()
                     ))
@@ -119,62 +125,45 @@ fun GameScreen(
         horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
+        if(gameState == initialGameState) {
+            BlinkingText(gameText)
+        }else{
+            Text(
+                modifier = Modifier
+                    .padding(32.dp),
+                fontSize = 32.sp,
+                text = gameText,
+                fontWeight = FontWeight.Bold
+            )
+        }
 
-        Text(
-            modifier = Modifier
-                .padding(32.dp),
-            text = gameText,
-            fontWeight = FontWeight.Bold
-        )
 
         if (showNewHighScoreText) {
             BlinkingText("New highscore!")
         }
 
         if (gameState == failedState || gameState == completedState) {
-            Button(
+            DadButton(
                 modifier = Modifier
                     .padding(16.dp),
-                onClick = {
-                resetGame()
-            }) {
-                Text(text = "Try again")
-            }
+                onButtonClick =  {
+                    resetGame()
+                },
+                buttonLabel = "Try again"
+            )
 
-            Button(
+            DadButton(
                 modifier = Modifier
                     .padding(16.dp),
-                onClick = {
+                onButtonClick =  {
                     navController.navigate(Screen.MenuScreen.route)
-                }) {
-                Text(text = "Quit")
-            }
+                },
+                buttonLabel = "Quit"
+            )
         }
     }
 }
 
-@Composable
-fun BlinkingText(text: String) {
-    val alpha = remember { Animatable(1f) }
-
-    LaunchedEffect(Unit) {
-        alpha.animateTo(
-            targetValue = 0f,
-            animationSpec = infiniteRepeatable(
-                animation = tween(durationMillis = 750),
-                repeatMode = RepeatMode.Reverse
-            )
-        )
-    }
-
-    Text(
-        text = text,
-        fontSize = 16.sp,
-        modifier = Modifier
-            .alpha(alpha.value)
-            .padding(16.dp)
-    )
-}
 
 
 
