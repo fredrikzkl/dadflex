@@ -1,9 +1,9 @@
 package com.example.dadflex.preferences
 
-import com.google.gson.Gson
-
 import android.content.Context
 import android.content.SharedPreferences
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 object PreferencesHelper {
     private const val PREFS_NAME = "dadflex_prefs"
@@ -25,8 +25,9 @@ object PreferencesHelper {
     }
 
     fun saveHighscore(context: Context, highscore: Highscore) {
-        val gson = Gson()
-        val highscoreJson = gson.toJson(highscore)
+        // Convert to JSON with kotlin serialization
+        val highscoreJson = Json.encodeToString(highscore)
+
         val editor = getPreferences(context).edit()
 
         editor.putString(KEY_HIGHSCORE, highscoreJson)
@@ -34,8 +35,14 @@ object PreferencesHelper {
     }
 
     fun getHighscore(context: Context): Highscore {
-        val gson = Gson()
         val json = getPreferences(context).getString(KEY_HIGHSCORE, null) ?: return Highscore()
-        return gson.fromJson(json, Highscore::class.java)
+        // Decode with kotlin serialization
+
+        return try {
+            Json.decodeFromString(json)
+        } catch (e: Exception) {
+            // Old java.util.Date format e.g 'Dec 10, 2024 4:42:44 PM' can't be parsed :(
+            Highscore()
+        }
     }
 }

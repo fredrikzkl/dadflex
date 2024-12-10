@@ -1,13 +1,16 @@
 package com.example.dadflex.preferences
 
-import java.util.Date
+import kotlinx.datetime.Instant
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class HighscoreEntry(
     val name : String,
     val reactionTime : Long,
-    val date : Date
+    val date : Instant
 )
 
+@Serializable
 class Highscore {
     private val highscoreList = mutableListOf<HighscoreEntry>()
 

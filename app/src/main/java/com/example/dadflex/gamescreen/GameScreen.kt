@@ -37,7 +37,8 @@ import com.example.dadflex.preferences.HighscoreEntry
 import com.example.dadflex.preferences.PreferencesHelper
 import com.example.dadflex.ui.theme.DadflexTheme
 import kotlinx.coroutines.delay
-import java.util.Date
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 
 
 @Composable
@@ -109,7 +110,7 @@ fun GameScreen(
                     val newHighScoreAdded = highscore.checkAndAddHighscore(HighscoreEntry(
                         name = name,
                         reactionTime = result,
-                        date = Date()
+                        date = Clock.System.now()
                     ))
 
                     if (newHighScoreAdded){
